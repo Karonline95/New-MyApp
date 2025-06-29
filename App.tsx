@@ -1,3 +1,7 @@
+if (__DEV__) {
+  import('./ReactotronConfig');
+}
+
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStack} from './src/navigation/RootStack';
@@ -9,14 +13,7 @@ import {linking} from './src/navigation/Deeplinks';
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
-      <NavigationContainer
-        linking={linking}
-        onReady={() => {
-          console.log('Navigation ready');
-        }}
-        onStateChange={state => {
-          console.log('NAV STATE:', JSON.stringify(state, null, 2));
-        }}>
+      <NavigationContainer linking={linking}>
         <ApolloProvider client={client}>
           <RootStack />
         </ApolloProvider>

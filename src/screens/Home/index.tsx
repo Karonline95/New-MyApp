@@ -1,22 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 import {ScreensEnum} from '../../constants';
 
 const Home = () => {
   const navigation = useNavigation();
-  console.log('Hello!');
-  useEffect(() => {
-    console.log('Home screen mounted');
-  }, []);
 
   const handlePressCountries = () => {
-    console.log('Button pressed!');
     navigation.navigate(ScreensEnum.COUNTRIES);
   };
 
   const handlePressList = () => {
-    console.log('Button pressed!');
     navigation.navigate(ScreensEnum.LIST);
   };
 

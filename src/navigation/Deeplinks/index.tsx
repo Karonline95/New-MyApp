@@ -8,14 +8,12 @@ export const linking: LinkingOptions<RootStackParamList> = {
   // Custom function to get the URL which was used to open the app
   async getInitialURL() {
     const url = await Linking.getInitialURL();
-    console.log('url getInitialURL = ', url);
     return url;
   },
 
   // Custom function to subscribe to incoming links
   subscribe(listener: (url: string) => void) {
     const linkingSubscription = Linking.addEventListener('url', ({url}) => {
-      console.log('url subscribe = ', url);
       listener(url);
     });
 

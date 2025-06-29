@@ -9,7 +9,6 @@ import {ScreensEnum} from '../../constants';
 const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
 export const HomeTabs = () => {
-  console.log('HomeTabs mounted');
   return (
     <Tab.Navigator
       screenOptions={{

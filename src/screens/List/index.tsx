@@ -1,29 +1,20 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native';
-import {useQuery} from '@apollo/client';
-import {GET_COUNTRIES} from '../../graphql/countries';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {styles} from './styles';
+import useList from './hooks/useList';
+import AddComment from './components/AddComent';
 
 const renderItem = ({item}: any) => {
   return (
-    <View>
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemId}>{item.id}</Text>
       <Text>{item.name}</Text>
     </View>
   );
 };
 
 const List = () => {
-  const {data, loading} = useQuery(GET_COUNTRIES, {
-    fetchPolicy: 'no-cache',
-  });
-  console.log('data = ', data);
-
-  const countries = data?.countries || [];
+  const {comments, loading, error, refetch, loadMore} = useList();
 
   if (loading) {
     return (
@@ -32,27 +23,32 @@ const List = () => {
       </View>
     );
   }
+
+  if (error) {
+    console.log('GRAPHQL ERROR = ', error);
+    return <Text style={styles.errorText}>Ошибка: {error.message}</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Добро пожаловать в список!</Text>
-      <FlatList data={countries} renderItem={renderItem} />
+      <AddComment />
+      <FlatList
+        style={styles.flatlist}
+        data={comments}
+        renderItem={renderItem}
+        keyExtractor={(item, index) =>
+          item.id ? `${item.id}-${index}` : String(index)
+        }
+        onEndReachedThreshold={0.2}
+        refreshing={false}
+        onRefresh={refetch}
+        onEndReached={loadMore}
+        horizontal={false}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
 
 export default List;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 20,
-  },
-});
